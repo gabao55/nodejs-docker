@@ -1,0 +1,4 @@
+mysql/.
+src/node_modules
+/mysql
+/.vs
