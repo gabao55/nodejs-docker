@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql');
+// const mysql = require('mysql');
 
 const app = express();
 const port = 3000;
@@ -10,26 +10,30 @@ const config = {
     database: 'nodejs-docker'
 };
 
-const connection = mysql.createConnection(config);
+// const connection = mysql.createConnection(config);
 
-const insertScript = `INSERT INTO people (name) VALUES ('Jonas');`
+// const insertScript = `INSERT INTO people (name) VALUES ('Jonas');`
 
-connection.query(insertScript);
+// connection.query(insertScript);
+
+let names = "<li>Teste</li>";
+// const selectScript = `SELECT * FROM people;`
+
+// connection.query(selectScript,
+//     [nameLandVariable], 
+//     function(err, rows) {
+//         names = rows.Map(r => `<li>${r.name}</li>`)
+//     }
+// );
+
+// connection.end();
 
 app.get('/', (req, res) => {
-    const selectScript = `SELECT * FROM people;`
-    
-    connection.query(selectScript,
-        [nameLandVariable], 
-        function(err, rows) {
-            const peopleList = rows.Map(r => `<li>${r.name}</li>`)
-            res.send(`<h1>Full Cycle Rocks!</h1>
-                <ul>
-                    ${peopleList}
-                </ul>
-            `)
-        }
-    );
+    res.send(`<h1>Full Cycle Rocks!</h1>
+        <ul>
+            ${names}
+        </ul>
+    `)
 });
 
 app.listen(port, () => {
