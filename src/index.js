@@ -1,5 +1,5 @@
 const express = require('express');
-// const mysql = require('mysql');
+const mysql = require('mysql');
 
 const app = express();
 const port = 3000;
@@ -10,28 +10,28 @@ const config = {
     database: 'nodejs-docker'
 };
 
-// const connection = mysql.createConnection(config);
+const connection = mysql.createConnection(config);
 
-// const insertScript = `INSERT INTO people (name) VALUES ('Jonas');`
+connection.query(`CREATE TABLE IF NOT EXISTS people(
+    name varchar(255) not null
+)`);
 
-// connection.query(insertScript);
+const sql = `INSERT INTO people (name) values ('GABRIEL');`
 
-let names = "<li>Teste</li>";
-// const selectScript = `SELECT * FROM people;`
+connection.query(sql);
 
-// connection.query(selectScript,
-//     [nameLandVariable], 
-//     function(err, rows) {
-//         names = rows.Map(r => `<li>${r.name}</li>`)
-//     }
-// );
+const selectScript = `SELECT * FROM people;`
 
-// connection.end();
+let names;
 
-app.get('/', (req, res) => {
+connection.query(selectScript,  async function (err, rows, fields) {
+    names = await rows.map(r => `<li>${r.name}</li>`)
+});
+
+app.get('/', async (req, res) => {
     res.send(`<h1>Full Cycle Rocks!</h1>
         <ul>
-            ${names}
+            ${names.join("\n")}
         </ul>
     `)
 });

@@ -1,20 +1,18 @@
-FROM node:15-alpine
+# Use the official Node.js 14 image as the base
+FROM node:latest
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-ENV DOCKERIZE_VERSION v0.7.0
+COPY package*.json ./
 
-RUN apk update --no-cache \
-    && apk add --no-cache wget openssl \
-    && wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar xzf - -C /usr/local/bin \
-    && apk del wget
-
-RUN apk add --no-cache bash
+RUN npm install
 
 COPY . .
 
-RUN npm i
+RUN wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz && \
+    tar -C /usr/local/bin -xzvf dockerize-linux-amd64-v0.6.1.tar.gz && \
+    rm dockerize-linux-amd64-v0.6.1.tar.gz
 
 EXPOSE 3000
 
-CMD [ "node", "index.js" ]
+CMD ["npm", "start"]
