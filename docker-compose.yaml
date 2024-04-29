@@ -8,11 +8,13 @@ services:
       dockerfile: Dockerfile
     container_name: nodejs
     image: gabrielrosin/node-simple-app
+    volumes:
+      - ./src:/app
     entrypoint: dockerize -wait tcp://db:3306 -timeout 20s sh -c "npm install && npm start"
     tty: true
     networks:
       - nodejs-network
-    depends_on: [ db, nginx ]
+    depends_on: [ db ]
 
   db:
     image: mysql:5.7
@@ -38,6 +40,7 @@ services:
       - nodejs-network
     ports:
       - "8080:80"
+    depends_on: [ nodejs ]
 
 networks:
   nodejs-network:
